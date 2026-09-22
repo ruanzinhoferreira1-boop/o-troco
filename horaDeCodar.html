@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+    const alunos = [];
+
+    while(true){
+        let cadastro = prompt("Digite o nome do aluno: ");
+
+        if (cadastro === null || cadastro.toUpperCase === "pare"){
+            break;
+        }
+
+        if (cadastro.trim() !== "") {
+            alunos.push(cadastro);
+        }
+
+            }
+
+alert(`Quantidades de alunos cadastrados:${alunos}`);
+
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
