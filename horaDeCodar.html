@@ -1,30 +1,200 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <script>
-    const alunos = [];
+        let nomeUsuario = "";
+let saldoAtual = 1000.00;
+const senhaCorreta = "2210";
+let movimentacoes = [];
 
-    while(true){
-        let cadastro = prompt("Digite o nome do aluno: ");
+function inicio() {
+    nomeUsuario = prompt("Bem-vindo ao Banco money Por favor, informe o seu nome:");
 
-        if (cadastro === null || cadastro.toUpperCase === "pare"){
+    if (nomeUsuario == null || nomeUsuario.trim() == "") {
+        alert("Nome inválido!");
+        inicio();
+        return;
+    }
+
+    alert("Olá, " + nomeUsuario + "! É um prazer ter você conosco.");
+    menuPrincipal();
+}
+
+function menuPrincipal() {
+    let opcao = prompt(
+        "Selecione uma opção:\n" +
+        "1. Saldo\n" +
+        "2. Extrato\n" +
+        "3. Saque\n" +
+        "4. Depósito\n" +
+        "5. Transferência\n" +
+        "6. Sair"
+    );
+
+    switch (opcao) {
+        case "1":
+            saldo();
             break;
+        case "2":
+            extrato();
+            break;
+        case "3":
+            saque();
+            break;
+        case "4":
+            deposito();
+            break;
+        case "5":
+            transferencia();
+            break;
+        case "6":
+            alert("Obrigado por utilizar nossos serviços, " + nomeUsuario + ". Até logo!");
+            break;
+        default:
+            erro();
+            break;
+    }
+}
+
+function verificarSenha() {
+    let senha = prompt("Digite sua senha:");
+
+    if (senha === senhaCorreta) {
+        return true;
+    }
+
+    alert("Senha incorreta!");
+    return false;
+}
+
+function saldo() {
+    if (!verificarSenha()) {
+        menuPrincipal();
+        return;
+    }
+
+    alert("Seu saldo atual é: R$ " + saldoAtual.toFixed(2));
+
+    menuPrincipal();
+}
+
+function extrato() {
+    if (!verificarSenha()) {
+        menuPrincipal();
+        return;
+    }
+
+    if (movimentacoes.length == 0) {
+        alert("--- EXTRATO FONTES ---\nSem movimentações recentes.");
+    } else {
+        let textoExtrato = "--- EXTRATO FONTES ---\n\n";
+
+        for (let i = 0; i < movimentacoes.length; i++) {
+            textoExtrato += movimentacoes[i] + "\n";
         }
 
-        if (cadastro.trim() !== "") {
-            alunos.push(cadastro);
-        }
+        textoExtrato += "\nSaldo atual: R$ " + saldoAtual.toFixed(2);
 
-            }
+        alert(textoExtrato);
+    }
 
-alert(`Quantidades de alunos cadastrados:${alunos}`);
+    menuPrincipal();
+}
 
+function saque() {
+    if (!verificarSenha()) {
+        menuPrincipal();
+        return;
+    }
+
+    let valorSaque = Number(prompt("Digite o valor que deseja sacar:"));
+
+    if (isNaN(valorSaque) || valorSaque <= 0) {
+        alert("Digite um valor válido!");
+        menuPrincipal();
+        return;
+    }
+
+    if (valorSaque > saldoAtual) {
+        alert("Saldo insuficiente!");
+        menuPrincipal();
+        return;
+    }
+
+    saldoAtual -= valorSaque;
+
+    movimentacoes.push(
+        "Saque: R$ " + valorSaque.toFixed(2)
+    );
+
+    alert("Saque de R$ " + valorSaque.toFixed(2) + " realizado com sucesso!");
+
+    menuPrincipal();
+}
+
+function deposito() {
+    let valorDeposito = Number(prompt("Digite o valor que deseja depositar:"));
+
+    if (isNaN(valorDeposito) || valorDeposito <= 0) {
+        alert("Digite um valor válido!");
+        menuPrincipal();
+        return;
+    }
+
+    saldoAtual += valorDeposito;
+
+    movimentacoes.push(
+        "Depósito: R$ " + valorDeposito.toFixed(2)
+    );
+
+    alert("Depósito de R$ " + valorDeposito.toFixed(2) + " realizado com sucesso!");
+
+    menuPrincipal();
+}
+
+function transferencia() {
+    if (!verificarSenha()) {
+        menuPrincipal();
+        return;
+    }
+
+    let valorTransferencia = Number(prompt("Digite o valor que deseja transferir:"));
+
+    if (isNaN(valorTransferencia) || valorTransferencia <= 0) {
+        alert("Digite um valor válido!");
+        menuPrincipal();
+        return;
+    }
+
+    if (valorTransferencia > saldoAtual) {
+        alert("Saldo insuficiente!");
+        menuPrincipal();
+        return;
+    }
+
+    saldoAtual -= valorTransferencia;
+
+    movimentacoes.push(
+        "Transferência: R$ " + valorTransferencia.toFixed(2)
+    );
+
+    alert("Transferência de R$ " + valorTransferencia.toFixed(2) + " realizada com sucesso!");
+
+    menuPrincipal();
+}
+
+function erro() {
+    alert("Opção inválida! Por favor, escolha um número de 1 a 6.");
+    menuPrincipal();
+}
+
+inicio();
     </script>
-</head>
-<body>
-    
+  </head>
+  </body>
+
 </body>
 </html>
